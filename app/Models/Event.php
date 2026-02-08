@@ -11,4 +11,13 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function players()
+    {
+        return $this->hasMany(Player::class, 'event_id');
+    }
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'event_id');
+    }
 }

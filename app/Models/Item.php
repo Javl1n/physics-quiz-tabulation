@@ -9,4 +9,15 @@ class Item extends Model
 {
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
+
+    protected $fillable = ['index', 'score'];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+    public function playerScores()
+    {
+        return $this->hasMany(Score::class, 'item_id');
+    }
 }
