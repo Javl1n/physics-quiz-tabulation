@@ -1,9 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { PenSquare, Trash } from "lucide-react";
 import { PlayerType } from "@/types";
+import { PlayerContext } from "./player-item";
 
-export default function PlayerContextMenu({ children, player }: { children: ReactNode, player: PlayerType }) {
+export default function PlayerMenu({ children }: { children: ReactNode }) {
+    const player = useContext(PlayerContext);
     return (
         <ContextMenu>
             <ContextMenuTrigger asChild>
