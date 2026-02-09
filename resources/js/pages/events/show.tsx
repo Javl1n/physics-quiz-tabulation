@@ -4,6 +4,8 @@ import type { BreadcrumbItem, EventType } from '@/types';
 import { Button } from '@/components/ui/button';
 import events from '@/routes/events';
 import DropDownNavigation from '@/components/events/menu';
+import PlayerItem from '@/components/players/player-item';
+import { ItemGroup } from '@/components/ui/item';
 
 
 
@@ -26,13 +28,11 @@ export default function ShowEvents({ event }: { event: EventType }) {
                     <Button className='text-xs mx-2'>Next Question</Button>
                     <DropDownNavigation />
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+                <ItemGroup className='grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
                     {event.players.map((player) => (
-                        <div>
-                            {player.name}
-                        </div>
+                        <PlayerItem player={player} />
                     ))}
-                </div>
+                </ItemGroup>
             </div>
         </AppLayout>
     );
