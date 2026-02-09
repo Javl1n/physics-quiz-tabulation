@@ -17,7 +17,13 @@ Route::prefix('events')->name('events.')->controller(App\Http\Controllers\EventC
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
         Route::get('/{event}', 'show')->name('show');
+        Route::patch('/{event}', 'update')->name('update');
+        Route::delete('/{event}', 'destroy')->name('destroy');
     })->middleware(['auth', 'verified']);
 
+Route::prefix('events/{event}/players')->name('players.')->controller(App\Http\Controllers\PlayerController::class)
+    ->group(function () {
+        Route::post('/', 'store')->name('store');
+    });
 
 require __DIR__ . '/settings.php';

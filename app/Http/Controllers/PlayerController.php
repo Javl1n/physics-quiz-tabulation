@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Player;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,23 @@ class PlayerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate([
+            "names" => "required|array",
+            "names.*" => "string",
+        ]);
+
+        foreach ($validated['names'] as $name) {
+            if (empty($name)) {
+                continue;
+            }
+            $event->players()->create([
+                "name" => $name
+            ]);
+        }
+
+        return back();
     }
 
     /**

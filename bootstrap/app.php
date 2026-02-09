@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
         $middleware->redirectGuestsTo('login');
-        $middleware->redirectUsersTo('events.index');
+        $middleware->redirectUsersTo('events');
         $middleware->web(append: [
             HandleAppearance::class,
             HandleInertiaRequests::class,

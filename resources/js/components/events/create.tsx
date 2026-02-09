@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Field, FieldGroup } from "../ui/field";
 import { Label } from "../ui/label";
@@ -9,6 +9,7 @@ import events from "@/routes/events";
 import InputError from "../input-error";
 
 export default function CreateEventDialog({ children }: { children: ReactNode }) {
+    const [open, setOpen] = useState(false);
     const { data, setData, post, errors } = useForm<{
         name: string
     }>({
@@ -16,19 +17,21 @@ export default function CreateEventDialog({ children }: { children: ReactNode })
     })
 
     const save = () => {
-        post(events.store().url);
+        post(events.store().url, {
+            onFinish: () => setOpen(false)
+        });
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add Event</DialogTitle>
+                    <DialogTitle>Create New Event</DialogTitle>
                     <DialogDescription>
-                        Add the name of the event here. Click submit when you&apos;re done. <br />Hint: make the event name more meaningful.
+                        Enter the name of the event here. Click submit when you&apos;re done. <br />Hint: make the event name more meaningful.
                     </DialogDescription>
                 </DialogHeader>
                 <Field>

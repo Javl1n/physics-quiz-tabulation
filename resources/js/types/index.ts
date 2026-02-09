@@ -11,38 +11,38 @@ export type SharedData = {
     [key: string]: unknown;
 };
 
-export type Event = {
+export type EventType = {
     id: number | string;
     name: string;
-    players: Player[];
-    items: Item[];
+    players: PlayerType[];
+    items: ItemType[];
     created_at: string;
     updated_at: string;
 }
 
-export type Player = {
+export type PlayerType = {
     id: number | string;
-    event: Event;
-    scores: Score[];
+    event: EventType;
+    scores: ScoreType[];
     name: string;
     created_at: string;
     updated_at: string;
 }
 
-export type Item = {
+export type ItemType = {
     id: number | string;
-    event: Event;
-    player_scores: Score[];
+    event: EventType;
+    player_scores: ScoreType[];
     index: number;
     score: number;
     created_at: string;
     updated_at: string;
 }
 
-export type Score = {
+export type ScoreType = {
     id: number | string;
-    player: Player;
-    item: Item;
+    player: PlayerType;
+    item: ItemType;
     created_at: string;
     updated_at: string;
 }

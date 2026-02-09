@@ -49,7 +49,7 @@ class EventController extends Controller
     {
         $events = Event::all();
         return inertia()->render('events/show', [
-            'event' => $event,
+            'event' => $event->load(['players']),
             'eventList' => $events
         ]);
     }
@@ -67,7 +67,13 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate([
+            "name" => "required|string",
+        ]);
+
+        $event->update($validated);
+
+        return redirect(route('events.show', $event));
     }
 
     /**
@@ -75,6 +81,8 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return redirect(route('events.index'));
     }
 }

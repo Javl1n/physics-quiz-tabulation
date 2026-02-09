@@ -1,0 +1,81 @@
+import { router, usePage } from '@inertiajs/react';
+import type { EventType } from '@/types';
+import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, UserPlus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import CreateEventDialog from '@/components/events/create';
+import events from '@/routes/events';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import DeleteEventDialog from './delete';
+import RenameEventDialog from './rename';
+import CreatePlayersDialog from '../players/create';
+
+
+export default function DropDownNavigation() {
+    const { event, eventList } = usePage<{
+        event: EventType,
+        eventList: EventType[]
+    }>().props;
+
+    const preventClose = (e: Event) => e.preventDefault();
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button className={" my-auto"} variant={"secondary"}>
+                    <MoreHorizontalIcon className='' />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger className='text-sm gap-1'>
+                            <TableProperties className='size-4 my-auto' />
+                            Change Event
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup
+                                value={event.id as string}
+                                onValueChange={(event) => events.show(event as unknown as number)}
+                            >
+                                {eventList.map((event: EventType) => (
+                                    <DropdownMenuRadioItem value={event.id as string} onClick={() => router.visit(events.show(event.id as number))}>
+                                        {event.name}
+                                    </DropdownMenuRadioItem>
+                                ))}
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <CreateEventDialog>
+                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                            <Plus />
+                            New Event
+                        </DropdownMenuItem>
+                    </CreateEventDialog>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <RenameEventDialog>
+                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                            <SquarePen />
+                            Rename Event
+                        </DropdownMenuItem>
+                    </RenameEventDialog>
+                    <CreatePlayersDialog>
+                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                            <UserPlus />
+                            Add Players
+                        </DropdownMenuItem>
+                    </CreatePlayersDialog>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DeleteEventDialog>
+                        <DropdownMenuItem className='text-sm gap-2' variant='destructive' onSelect={preventClose}>
+                            <LucideTrash className='text-destructive' />
+                            Delete Event
+                        </DropdownMenuItem>
+                    </DeleteEventDialog>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu >
+    )
+}
