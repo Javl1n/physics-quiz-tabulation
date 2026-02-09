@@ -13,7 +13,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-        Window::open()->titleBarHidden();
+        Window::open()->route('login')->titleBarHidden();
     }
 
     /**

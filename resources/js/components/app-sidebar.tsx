@@ -12,7 +12,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 import events from '@/routes/events';
@@ -45,7 +44,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={events.index()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
