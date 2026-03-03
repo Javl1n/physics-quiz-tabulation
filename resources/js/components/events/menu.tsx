@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import DeleteEventDialog from './delete';
 import RenameEventDialog from './rename';
 import CreatePlayersDialog from '../players/create';
+import { ButtonGroup } from '../ui/button-group';
 
 
 export default function DropDownNavigation() {
@@ -18,64 +19,66 @@ export default function DropDownNavigation() {
 
     const preventClose = (e: Event) => e.preventDefault();
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button className={" my-auto"} variant={"secondary"}>
-                    <MoreHorizontalIcon className='' />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                <DropdownMenuGroup>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger className='text-sm gap-1'>
-                            <TableProperties className='size-4 my-auto' />
-                            Change Event
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuSubContent>
-                            <DropdownMenuRadioGroup
-                                value={event.id as string}
-                                onValueChange={(event) => events.show(event as unknown as number)}
-                            >
-                                {eventList.map((event: EventType) => (
-                                    <DropdownMenuRadioItem value={event.id as string} onClick={() => router.visit(events.show(event.id as number))}>
-                                        {event.name}
-                                    </DropdownMenuRadioItem>
-                                ))}
-                            </DropdownMenuRadioGroup>
-                        </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                    <CreateEventDialog>
-                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
-                            <Plus />
-                            New Event
-                        </DropdownMenuItem>
-                    </CreateEventDialog>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <RenameEventDialog>
-                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
-                            <SquarePen />
-                            Rename Event
-                        </DropdownMenuItem>
-                    </RenameEventDialog>
-                    <CreatePlayersDialog>
-                        <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
-                            <UserPlus />
-                            Add Players
-                        </DropdownMenuItem>
-                    </CreatePlayersDialog>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DeleteEventDialog>
-                        <DropdownMenuItem className='text-sm gap-2' variant='destructive' onSelect={preventClose}>
-                            <LucideTrash className='text-destructive' />
-                            Delete Event
-                        </DropdownMenuItem>
-                    </DeleteEventDialog>
-                </DropdownMenuGroup>
-            </DropdownMenuContent>
-        </DropdownMenu >
+        <ButtonGroup>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button size={'sm'} variant={"outline"}>
+                        <MoreHorizontalIcon className='' />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className='text-sm gap-1'>
+                                <TableProperties className='size-4 my-auto' />
+                                Change Event
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuRadioGroup
+                                    value={event.id as string}
+                                    onValueChange={(event) => events.show(event as unknown as number)}
+                                >
+                                    {eventList.map((event: EventType) => (
+                                        <DropdownMenuRadioItem value={event.id as string} onClick={() => router.visit(events.show(event.id as number))}>
+                                            {event.name}
+                                        </DropdownMenuRadioItem>
+                                    ))}
+                                </DropdownMenuRadioGroup>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+                        <CreateEventDialog>
+                            <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                                <Plus />
+                                New Event
+                            </DropdownMenuItem>
+                        </CreateEventDialog>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <RenameEventDialog>
+                            <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                                <SquarePen />
+                                Rename Event
+                            </DropdownMenuItem>
+                        </RenameEventDialog>
+                        <CreatePlayersDialog>
+                            <DropdownMenuItem className='text-sm gap-2' onSelect={preventClose}>
+                                <UserPlus />
+                                Add Players
+                            </DropdownMenuItem>
+                        </CreatePlayersDialog>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <DeleteEventDialog>
+                            <DropdownMenuItem className='text-sm gap-2' variant='destructive' onSelect={preventClose}>
+                                <LucideTrash className='text-destructive' />
+                                Delete Event
+                            </DropdownMenuItem>
+                        </DeleteEventDialog>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu >
+        </ButtonGroup>
     )
 }

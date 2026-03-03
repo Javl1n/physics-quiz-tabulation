@@ -30,18 +30,10 @@ class PlayerController extends Controller
     public function store(Request $request, Event $event)
     {
         $validated = $request->validate([
-            "names" => "required|array",
-            "names.*" => "string",
+            "name" => "required|string",
         ]);
 
-        foreach ($validated['names'] as $name) {
-            if (empty($name)) {
-                continue;
-            }
-            $event->players()->create([
-                "name" => $name
-            ]);
-        }
+        $event->players()->create($validated);
 
         return back();
     }
