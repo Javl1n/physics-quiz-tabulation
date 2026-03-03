@@ -16,8 +16,9 @@ class Item extends Model
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
-    public function playerScores()
+
+    public function players()
     {
-        return $this->hasMany(Score::class, 'item_id');
+        return $this->belongsToMany(Player::class);
     }
 }

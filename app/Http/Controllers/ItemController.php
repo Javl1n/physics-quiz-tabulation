@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
@@ -26,9 +28,20 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Event $event)
     {
-        //
+        $event = $event->load(['items', 'latestItem']);
+        $latestItem = $event->latestItem;
+
+        $item = $event->items()->create([
+            'index' => $latestItem->index + 1,
+            'score' => $latestItem->score
+        ]);
+
+        return redirect(route('events.show', [
+            'event' => $event,
+            'question' => $item
+        ]));
     }
 
     /**
@@ -50,9 +63,32 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Event $event, Item $item)
     {
-        //
+
+        $request->validate([
+            'operation' => ['required', Rule::in(['+', '-'])]
+        ]);
+
+        $score = $item->score;
+
+        switch ($request->operation) {
+            case '+':
+                $score += 1;
+                break;
+            case '-':
+                $score -= 1;
+                break;
+            default:
+                return back();
+                break;
+        }
+
+        $item->update([
+            'score' => $score
+        ]);
+
+        return back();
     }
 
     /**

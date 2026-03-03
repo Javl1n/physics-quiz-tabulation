@@ -4,15 +4,29 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/comp
 import { useInitials } from "@/hooks/use-initials";
 import PlayerMenu from "./menu";
 import { createContext } from "react";
+import { router, usePage } from "@inertiajs/react";
+import { ShowEventProps } from "@/pages/events/show";
+import players from "@/routes/players";
 
 export const PlayerContext = createContext<PlayerType | null>(null);
 
 export default function PlayerItem({ player }: { player: PlayerType }) {
     const getInitials = useInitials();
+    const { question, event } = usePage<ShowEventProps>().props;
+    const isCorrect = question.players.map((player) => player.id).includes(player.id)
+
+    const score = () => {
+        router.post(players.score({
+            event: event.id as number,
+            player: player.id as number
+        }), {
+            item: question.id
+        })
+    }
     return (
         <PlayerContext.Provider value={player}>
             <PlayerMenu>
-                <Item variant={"outline"}>
+                <Item onClick={score} variant={isCorrect ? "muted" : "outline"} className={``}>
                     <ItemMedia>
                         <Avatar>
                             <AvatarFallback>
@@ -26,8 +40,8 @@ export default function PlayerItem({ player }: { player: PlayerType }) {
                         </ItemTitle>
                     </ItemContent>
                     <ItemContent>
-                        <ItemDescription>
-                            {Math.floor(Math.random() * 10)}
+                        <ItemDescription className="text-xl font-black">
+                            {player.score}
                         </ItemDescription>
                     </ItemContent>
                 </Item>

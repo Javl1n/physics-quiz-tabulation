@@ -16,6 +16,8 @@ export type EventType = {
     name: string;
     players: PlayerType[];
     items: ItemType[];
+    latest_item: ItemType;
+    score: number;
     created_at: string;
     updated_at: string;
 }
@@ -23,8 +25,9 @@ export type EventType = {
 export type PlayerType = {
     id: number | string;
     event: EventType;
-    scores: ScoreType[];
+    items: ItemType[];
     name: string;
+    score: number;
     created_at: string;
     updated_at: string;
 }
@@ -32,17 +35,9 @@ export type PlayerType = {
 export type ItemType = {
     id: number | string;
     event: EventType;
-    player_scores: ScoreType[];
+    players: PlayerType[];
     index: number;
     score: number;
-    created_at: string;
-    updated_at: string;
-}
-
-export type ScoreType = {
-    id: number | string;
-    player: PlayerType;
-    item: ItemType;
     created_at: string;
     updated_at: string;
 }

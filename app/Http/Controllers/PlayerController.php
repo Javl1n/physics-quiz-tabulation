@@ -38,6 +38,17 @@ class PlayerController extends Controller
         return back();
     }
 
+    public function score(Request $request, Event $event, Player $player)
+    {
+        $validated = $request->validate([
+            'item' => ['required', 'exists:items,id'],
+        ]);
+
+        $player->items()->toggle($validated);
+
+        return;
+    }
+
     /**
      * Display the specified resource.
      */

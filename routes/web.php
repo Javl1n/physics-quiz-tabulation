@@ -21,9 +21,20 @@ Route::prefix('events')->name('events.')->controller(App\Http\Controllers\EventC
         Route::delete('/{event}', 'destroy')->name('destroy');
     })->middleware(['auth', 'verified']);
 
+Route::get('events/{event}/leaderboard', [App\Http\Controllers\EventController::class, 'leaderboard'])->name('events.leaderboard');
+
 Route::prefix('events/{event}/players')->name('players.')->controller(App\Http\Controllers\PlayerController::class)
     ->group(function () {
         Route::post('/', 'store')->name('store');
+        Route::post('/{player}/score', 'score')->name('score');
     });
+
+Route::prefix('events/{event}/items')->name('items.')->controller(App\Http\Controllers\ItemController::class)
+    ->group(function () {
+        Route::post('/', 'store')->name('store');
+        Route::patch('/{item}', 'update')->name('update');
+    });
+
+
 
 require __DIR__ . '/settings.php';

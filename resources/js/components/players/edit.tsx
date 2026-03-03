@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { useForm, usePage } from "@inertiajs/react";
 import { Button } from "../ui/button";
 import { EventType } from "@/types";
@@ -9,22 +9,24 @@ import players from "@/routes/players";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import InputError from "../input-error";
-import { Kbd, KbdGroup } from "../ui/kbd";
+import { PlayerContext } from "./player-item";
 
-export default function CreatePlayersDialog({ children }: { children: ReactNode }) {
+export default function EditPlayerDialog({ children }: { children: ReactNode }) {
+    const player = useContext(PlayerContext);
     const { event } = usePage<{ event: EventType }>().props;
     const [isOpen, setIsOpen] = useState(false)
-    const { data, setData, post, reset, errors } = useForm<{
+
+    const { data, setData, patch, reset, errors } = useForm<{
         name: string
     }>({
-        name: ""
+        name: player!.name
     });
 
-    const save = (canContinue: boolean = false) => {
-        post(players.store(event.id as number).url, {
+    const save = () => {
+        patch(players.store(event.id as number).url, {
             onSuccess: () => {
                 reset();
-                setIsOpen(canContinue);
+                setIsOpen(false);
             }
         });
     }
@@ -48,13 +50,6 @@ export default function CreatePlayersDialog({ children }: { children: ReactNode 
                             onChange={(e) => (
                                 setData('name', e.target.value)
                             )}
-                            onKeyUp={(e) => {
-                                if (e.key === "Enter" && e.ctrlKey) {
-                                    save(true)
-                                } else if (e.key === "Enter") {
-                                    save(false)
-                                }
-                            }}
                             placeholder="John Doe"
                             autoFocus
                         />
@@ -62,22 +57,8 @@ export default function CreatePlayersDialog({ children }: { children: ReactNode 
                     <InputError message={errors.name} />
                 </Field>
                 <DialogFooter>
-                    <Button variant={"secondary"} onClick={() => save(true)}>
-                        Next{" "}
-                        <KbdGroup data-icon="inline-end">
-                            <Kbd>
-                                Ctrl
-                            </Kbd>
-                            <Kbd>
-                                ⏎
-                            </Kbd>
-                        </KbdGroup>
-                    </Button>
                     <Button onClick={() => save()}>
-                        Save{" "}
-                        <Kbd data-icon="inline-end">
-                            ⏎
-                        </Kbd>
+                        Save
                     </Button>
                 </DialogFooter>
             </DialogContent>

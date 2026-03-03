@@ -39,18 +39,39 @@ class EventController extends Controller
         ]);
 
         $event = Event::create($validated);
+        $event->items()->create([
+            'index' => 1,
+            'score' => 1
+        ]);
         return redirect(route('events.show', $event));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(Request $request, Event $event)
     {
         $events = Event::all();
+        $event = $event->load(['players', 'items', 'latestItem']);
+
+        $items = $event->items;
+        $item = $request->question ? $items->where('index', $request->question)->first() : $items->first();
+        $item = $item->load(['players']);
+
         return inertia()->render('events/show', [
             'event' => $event->load(['players']),
-            'eventList' => $events
+            'events' => $events,
+            'question' => $item,
+            'questions' => $items,
+        ]);
+    }
+
+    public function leaderboard(Event $event)
+    {
+        $event = $event->load(['players', 'items']);
+
+        return inertia()->render('events/leaderboards', [
+            'event' => $event
         ]);
     }
 

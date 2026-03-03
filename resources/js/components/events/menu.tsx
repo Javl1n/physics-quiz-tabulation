@@ -9,13 +9,11 @@ import DeleteEventDialog from './delete';
 import RenameEventDialog from './rename';
 import CreatePlayersDialog from '../players/create';
 import { ButtonGroup } from '../ui/button-group';
+import { ShowEventProps } from '@/pages/events/show';
 
 
 export default function DropDownNavigation() {
-    const { event, eventList } = usePage<{
-        event: EventType,
-        eventList: EventType[]
-    }>().props;
+    const { event, events: eventList } = usePage<ShowEventProps>().props;
 
     const preventClose = (e: Event) => e.preventDefault();
     return (
