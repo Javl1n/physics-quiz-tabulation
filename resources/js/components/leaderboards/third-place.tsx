@@ -6,7 +6,7 @@ import { LeaderboardProps } from "@/pages/events/leaderboards";
 export default function ThirdPlaceCard({ player }: { player: PlayerType }) {
     const { event } = usePage<LeaderboardProps>().props;
     return (
-        <div className="scale-90 relative overflow-hidden order-3 border rounded p-4 item-center">
+        <div className="scale-90 relative overflow-hidden order-3 border rounded p-4 item-center select-none">
             <div className="absolute font-bold text-[10rem] -bottom-16 -right-2 z-0 text-muted font-serif">
                 3
             </div>
