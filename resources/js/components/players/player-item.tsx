@@ -7,6 +7,7 @@ import { createContext } from "react";
 import { router, usePage } from "@inertiajs/react";
 import { ShowEventProps } from "@/pages/events/show";
 import players from "@/routes/players";
+import { cn } from "@/lib/utils";
 
 export const PlayerContext = createContext<PlayerType | null>(null);
 
@@ -26,21 +27,19 @@ export default function PlayerItem({ player }: { player: PlayerType }) {
     return (
         <PlayerContext.Provider value={player}>
             <PlayerMenu>
-                <Item onClick={score} variant={isCorrect ? "muted" : "outline"} className={``}>
-                    <ItemMedia>
-                        <Avatar>
-                            <AvatarFallback>
-                                {getInitials(player.name)}
-                            </AvatarFallback>
-                        </Avatar>
-                    </ItemMedia>
+                <Item onClick={score} variant={'outline'} className={cn([
+                    isCorrect && 'border-green-700 bg-green-900/10 text-green-500'
+                ])}>
                     <ItemContent>
                         <ItemTitle className="line-clamp-1">
                             {player.name}
                         </ItemTitle>
                     </ItemContent>
                     <ItemContent>
-                        <ItemDescription className="text-xl font-black">
+                        <ItemDescription className={cn([
+                            "text-xl font-black",
+                            isCorrect && "text-green-500"
+                        ])}>
                             {player.score}
                         </ItemDescription>
                     </ItemContent>
