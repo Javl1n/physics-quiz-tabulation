@@ -6,7 +6,7 @@ import { LeaderboardProps } from "@/pages/events/leaderboards";
 export default function FirstPlaceCard({ player }: { player: PlayerType }) {
     const { event } = usePage<LeaderboardProps>().props;
     return (
-        <div className="scale-110 relative overflow-hidden order-2 border rounded p-4 shadow-xl/0 shadow-foreground item-center select-none">
+        <div className="bg-background scale-110 relative overflow-hidden order-2 border rounded p-4 shadow-xl/0 shadow-foreground item-center select-none">
             <div className="absolute font-bold text-[15rem] -bottom-25 -right-3 z-0 text-muted font-serif">
                 1
             </div>

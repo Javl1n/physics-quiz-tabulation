@@ -7,7 +7,7 @@ import { LeaderboardProps } from "@/pages/events/leaderboards";
 export default function OtherPlaceItem({ player, index }: { player: PlayerType, index: number }) {
     const { event } = usePage<LeaderboardProps>().props;
     return (
-        <Item variant={'outline'}>
+        <Item variant={'outline'} className="bg-background">
             <ItemMedia className="font-bold text-primary text-lg leading-0 my-auto select-none">
                 {index + 4}
             </ItemMedia>
