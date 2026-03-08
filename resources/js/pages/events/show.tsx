@@ -36,7 +36,7 @@ export default function ShowEvents({ event }: ShowEventProps) {
                     <QuestionNavigation />
 
                     <ButtonGroup>
-                        <ButtonGroup>
+                        <ButtonGroup className='hidden md:block'>
                             <Button asChild variant={'outline'} size={'sm'}>
                                 <a href={events.leaderboard(event.id as number).url} target='_blank'>
                                     <Trophy />
