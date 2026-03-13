@@ -8,6 +8,7 @@ import { router, usePage } from '@inertiajs/react';
 import { ShowEventProps } from '@/pages/events/show';
 import items from '@/routes/items';
 import events from '@/routes/events';
+import SelectQuestionDropdown from './select-dropdown';
 
 export default function QuestionNavigation() {
     const { event, question } = usePage<ShowEventProps>().props;
@@ -34,22 +35,22 @@ export default function QuestionNavigation() {
     return (
         <ButtonGroup>
             <ButtonGroup>
-                <Button variant={'outline'} size={'sm'} asChild className='text-xs'>
-                    <div>
-                        Question {question.index}
-                    </div>
-                </Button>
-                <Button variant={'outline'} size={'sm'} onClick={() => changeQuestion(parseInt(question.id as string) - 1)} disabled={question.index == 1}>
+                <SelectQuestionDropdown>
+                    <Button variant={'outline'} size={'sm'} asChild className='text-xs'>
+                        <div>
+                            Question {question.index}
+                        </div>
+                    </Button>
+                </SelectQuestionDropdown>
+                <Button className='hidden md:block' variant={'outline'} size={'sm'} onClick={() => changeQuestion(parseInt(question.id as string) - 1)} disabled={question.index == 1}>
                     <ChevronLeft />
                 </Button>
-                <Button variant={'outline'} size={'sm'} onClick={() => changeQuestion(parseInt(question.id as string) + 1)} disabled={question.index == event.latest_item.index}>
+                <Button className='hidden md:block' variant={'outline'} size={'sm'} onClick={() => changeQuestion(parseInt(question.id as string) + 1)} disabled={question.index == event.latest_item.index}>
                     <ChevronRight />
                 </Button>
                 <Button variant={'outline'} size={'sm'} onClick={addQuestion}>
                     <PlusCircle />
                 </Button>
-            </ButtonGroup>
-            <ButtonGroup>
             </ButtonGroup>
             <ButtonGroup>
                 <Button variant={'outline'} size={'sm'} onClick={() => updateScore('-')} disabled={question.score == 1}>

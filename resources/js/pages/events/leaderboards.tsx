@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "motion/react";
 import AppLogoImage from "@/components/app-logo-image";
 import FirstPlaceCard from "@/components/leaderboards/first-place";
 import OtherPlaceItem from "@/components/leaderboards/other-place";
@@ -8,9 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
-import { EventType, SharedData } from "@/types";
+import { EventType, PlayerType, SharedData } from "@/types";
 import { usePage, usePoll } from "@inertiajs/react";
+import { useEcho, useEchoPublic } from "@laravel/echo-react";
 import { Dot } from "lucide-react";
+import { useState } from "react";
 
 export type LeaderboardProps = SharedData & {
     event: EventType;
@@ -18,11 +21,23 @@ export type LeaderboardProps = SharedData & {
 
 export default function EventLeaderboardPage() {
     const { event } = usePage<LeaderboardProps>().props;
-    usePoll(3000);
-    const sortedPlayers = event.players.sort((a, b) => b.score - a.score)
-    console.log(sortedPlayers.map((player) => player.score))
+    // usePoll(3000);
+    const [players, setPlayers] = useState<PlayerType[]>(event.players.sort((a, b) => b.score - a.score))
+
+
+    useEchoPublic(`leaderboards.${event.id}`, '.player.updated', ({ player }: { player: PlayerType }) => {
+        setPlayers(prev =>
+            (
+                prev.some(p => p.id === player.id)
+                    ? prev.map(p => p.id === player.id ? player : p)
+                    : [...prev, player]
+            ).sort((a, b) => b.score - a.score)
+        )
+    })
+
     return (
-        <div className="px-10 py-6 h-screen">
+        <div className="px-10 py-6 min-h-screen">
+
             {/* <div className="absolute inset-0 opacity-10" */}
             {/*     style={{ */}
             {/*         backgroundImage: `url(/storage/star-background.png)`, */}
@@ -30,6 +45,7 @@ export default function EventLeaderboardPage() {
             {/*         backgroundPosition: "center" */}
             {/*     }} */}
             {/* /> */}
+
             <div className="flex gap-6">
                 <AppLogoImage className="size-16 scale-150" />
                 <div className="flex-1">
@@ -54,7 +70,7 @@ export default function EventLeaderboardPage() {
                             <Separator orientation="vertical" />
                             <div>
                                 <div className="font-bold text-lg text-end">
-                                    {event.players.length}
+                                    {players.length}
                                 </div>
                                 <div className="font-extralight text-sm text-accent-foreground/50 leading-1">
                                     Players
@@ -68,17 +84,55 @@ export default function EventLeaderboardPage() {
                 <MsuLogoImage className="size-16 scale-140" />
             </div>
             {/* Podium */}
-            <div className="grid grid-cols-3 gap-5 mt-6">
-                <FirstPlaceCard player={sortedPlayers[0]} />
-                <SecondPlaceCard player={sortedPlayers[1]} />
-                <ThirdPlaceCard player={sortedPlayers[2]} />
-            </div>
+            <AnimatePresence>
+                <div className="grid grid-cols-3 gap-5 mt-6">
+                    <motion.div
+                        key={players[1]?.id}
+                        layout
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <SecondPlaceCard player={players[1]} />
+                    </motion.div>
+                    <motion.div
+                        key={players[0]?.id}
+                        layout
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <FirstPlaceCard player={players[0]} />
+                    </motion.div>
+                    <motion.div
+                        key={players[2]?.id}
+                        layout
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <ThirdPlaceCard player={players[2]} />
+                    </motion.div>
+                </div>
+            </AnimatePresence>
 
             <Separator className="mt-10" />
 
-            <div className="grid grid-cols-3 gap-4 mt-7">
-                {sortedPlayers.slice(3).map((player, index) => (
-                    <OtherPlaceItem player={player} index={index} key={player.id} />
+            <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mt-7">
+                {players.slice(3).map((player, index) => (
+                    <motion.div
+                        key={player.id}
+                        layout
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <OtherPlaceItem player={player} index={index} key={player.id} />
+                    </motion.div>
                 ))}
             </div>
         </div>

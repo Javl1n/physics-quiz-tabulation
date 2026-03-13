@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PlayerUpdated;
 use App\Models\Event;
 use App\Models\Player;
 use Illuminate\Http\Request;
@@ -45,6 +46,8 @@ class PlayerController extends Controller
         ]);
 
         $player->items()->toggle($validated);
+
+        broadcast(new PlayerUpdated($player));
 
         return;
     }

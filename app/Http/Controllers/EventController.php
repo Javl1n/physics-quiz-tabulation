@@ -56,6 +56,7 @@ class EventController extends Controller
 
         $items = $event->items;
         $item = $request->question ? $items->where('index', $request->question)->first() : $items->first();
+        // dd($item);
         $item = $item->load(['players']);
 
         return inertia()->render('events/show', [

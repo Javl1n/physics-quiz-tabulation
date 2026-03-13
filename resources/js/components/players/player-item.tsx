@@ -22,12 +22,14 @@ export default function PlayerItem({ player }: { player: PlayerType }) {
             player: player.id as number
         }), {
             item: question.id
+        }, {
+            preserveScroll: true
         })
     }
     return (
         <PlayerContext.Provider value={player}>
             <PlayerMenu>
-                <Item onClick={score} variant={'outline'} className={cn([
+                <Item onMouseDown={(e) => e.preventDefault()} onClick={score} variant={'outline'} className={cn([
                     isCorrect && 'border-green-700 bg-green-900/10 text-green-500'
                 ])}>
                     <ItemContent>

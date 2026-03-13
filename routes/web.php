@@ -27,13 +27,13 @@ Route::prefix('events/{event}/players')->name('players.')->controller(App\Http\C
     ->group(function () {
         Route::post('/', 'store')->name('store');
         Route::post('/{player}/score', 'score')->name('score');
-    });
+    })->middleware(['auth', 'verified']);
 
 Route::prefix('events/{event}/items')->name('items.')->controller(App\Http\Controllers\ItemController::class)
     ->group(function () {
         Route::post('/', 'store')->name('store');
         Route::patch('/{item}', 'update')->name('update');
-    });
+    })->middleware(['auth', 'verified']);
 
 
 

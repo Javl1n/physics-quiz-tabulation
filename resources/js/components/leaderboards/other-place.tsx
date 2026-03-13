@@ -16,9 +16,9 @@ export default function OtherPlaceItem({ player, index }: { player: PlayerType, 
                     <span className="font-bold text-primary">{player.name}</span>
                     <span className="text-muted-foreground/60 select-none">{player.score} pts</span>
                 </ItemTitle>
-                <ItemDescription>
+                <div className="mt-1">
                     <Progress className="h-1" value={player.score / event.score * 100} />
-                </ItemDescription>
+                </div>
             </ItemContent>
         </Item>
     )

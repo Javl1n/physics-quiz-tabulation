@@ -1,6 +1,6 @@
 import { router, usePage } from '@inertiajs/react';
 import type { EventType } from '@/types';
-import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, UserPlus } from 'lucide-react';
+import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, Trophy, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreateEventDialog from '@/components/events/create';
 import events from '@/routes/events';
@@ -65,6 +65,12 @@ export default function DropDownNavigation() {
                                 Add Players
                             </DropdownMenuItem>
                         </CreatePlayersDialog>
+                        <DropdownMenuItem asChild className='sm:hidden'>
+                            <a href={events.leaderboard(event.id as number).url} target='_blank'>
+                                <Trophy />
+                                Leaderboards
+                            </a>
+                        </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
