@@ -14,7 +14,7 @@ class EventSeeder extends Seeder
     public function run(): void
     {
         $event = Event::create([
-            'name' => "Physics Day Quiz",
+            'name' => "Demo Event",
         ]);
 
         $event->items()->create([
