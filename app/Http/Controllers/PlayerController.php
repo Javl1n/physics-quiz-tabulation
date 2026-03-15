@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PlayerDeleted;
 use App\Events\PlayerUpdated;
 use App\Models\Event;
 use App\Models\Player;
@@ -34,7 +35,9 @@ class PlayerController extends Controller
             "name" => "required|string",
         ]);
 
-        $event->players()->create($validated);
+        $player = $event->players()->create($validated);
+
+        broadcast(new PlayerUpdated($player));
 
         return back();
     }
@@ -71,16 +74,27 @@ class PlayerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Player $player)
+    public function update(Request $request, Event $event, Player $player)
     {
-        //
+        $validated = $request->validate([
+            'name' => "required|string",
+        ]);
+
+        $player->update($validated);
+
+        broadcast(new PlayerUpdated($player));
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Player $player)
+    public function destroy(Event $event, Player $player)
     {
-        //
+        $player->delete();
+        broadcast(new PlayerDeleted($player));
+
+        return back();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ItemUpdated;
 use App\Models\Event;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ class ItemController extends Controller
             'score' => $latestItem->score
         ]);
 
+        broadcast(new ItemUpdated($item));
+
         return redirect(route('events.show', [
             'event' => $event,
             'question' => $item->index
@@ -66,27 +69,13 @@ class ItemController extends Controller
     public function update(Request $request, Event $event, Item $item)
     {
 
-        $request->validate([
-            'operation' => ['required', Rule::in(['+', '-'])]
+        $validated = $request->validate([
+            'score' => ['required', 'integer']
         ]);
 
-        $score = $item->score;
+        $item->update($validated);
 
-        switch ($request->operation) {
-            case '+':
-                $score += 1;
-                break;
-            case '-':
-                $score -= 1;
-                break;
-            default:
-                return back();
-                break;
-        }
-
-        $item->update([
-            'score' => $score
-        ]);
+        broadcast(new ItemUpdated($item));
 
         return back();
     }

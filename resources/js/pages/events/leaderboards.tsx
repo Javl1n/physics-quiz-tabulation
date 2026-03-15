@@ -5,14 +5,10 @@ import OtherPlaceItem from "@/components/leaderboards/other-place";
 import SecondPlaceCard from "@/components/leaderboards/second-place";
 import ThirdPlaceCard from "@/components/leaderboards/third-place";
 import MsuLogoImage from "@/components/msu-logo-image";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Toggle } from "@/components/ui/toggle";
-import { EventType, PlayerType, SharedData } from "@/types";
-import { usePage, usePoll } from "@inertiajs/react";
-import { useEcho, useEchoPublic } from "@laravel/echo-react";
-import { Dot } from "lucide-react";
+import { EventType, ItemType, PlayerType, SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
+import { useEchoPublic } from "@laravel/echo-react";
 import { useState } from "react";
 
 export type LeaderboardProps = SharedData & {
@@ -21,31 +17,36 @@ export type LeaderboardProps = SharedData & {
 
 export default function EventLeaderboardPage() {
     const { event } = usePage<LeaderboardProps>().props;
-    // usePoll(3000);
-    const [players, setPlayers] = useState<PlayerType[]>(event.players.sort((a, b) => b.score - a.score))
 
+    const [players, setPlayers] = useState<PlayerType[]>(event.players.sort((a, b) => b.score - a.score));
+    const [items, setItems] = useState<ItemType[]>(event.items);
+
+    useEchoPublic(`leaderboards.${event.id}`, '.player.deleted', ({ player }: { player: PlayerType }) => {
+        console.log('deleted')
+        setPlayers(prev => [
+            ...prev.filter((p) => p.id !== player.id)
+        ])
+    })
 
     useEchoPublic(`leaderboards.${event.id}`, '.player.updated', ({ player }: { player: PlayerType }) => {
-        setPlayers(prev =>
-            (
-                prev.some(p => p.id === player.id)
-                    ? prev.map(p => p.id === player.id ? player : p)
-                    : [...prev, player]
-            ).sort((a, b) => b.score - a.score)
-        )
-    })
+        setPlayers(prev => (
+            prev.some(p => p.id === player.id)
+                ? prev.map(p => p.id === player.id ? player : p)
+                : [...prev, player]
+        ).sort((a, b) => b.score - a.score))
+    });
+
+    useEchoPublic(`leaderboards.${event.id}`, ".item.updated", (({ item }: { item: ItemType }) => {
+        setItems(prev => (
+            prev.some(i => i.id === item.id)
+                ? prev.map(i => i.id === item.id ? item : i)
+                : [...prev, item]
+        ))
+    }));
+
 
     return (
         <div className="px-10 py-6 min-h-screen">
-
-            {/* <div className="absolute inset-0 opacity-10" */}
-            {/*     style={{ */}
-            {/*         backgroundImage: `url(/storage/star-background.png)`, */}
-            {/*         backgroundSize: 'cover', */}
-            {/*         backgroundPosition: "center" */}
-            {/*     }} */}
-            {/* /> */}
-
             <div className="flex gap-6">
                 <AppLogoImage className="size-16 scale-150" />
                 <div className="flex-1">
@@ -61,10 +62,19 @@ export default function EventLeaderboardPage() {
                         <div className="flex gap-5 me-4">
                             <div className="">
                                 <div className="font-bold text-xl text-end">
-                                    {event.items.length}
+                                    {items.length}
                                 </div>
                                 <div className="font-extralight text-sm text-accent-foreground/50 leading-1">
-                                    Questions
+                                    Items
+                                </div>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div className="">
+                                <div className="font-bold text-xl text-end">
+                                    {items.reduce((sum, item) => sum + item.score, 0)}
+                                </div>
+                                <div className="font-extralight text-sm text-accent-foreground/50 leading-1">
+                                    Total
                                 </div>
                             </div>
                             <Separator orientation="vertical" />
@@ -118,9 +128,7 @@ export default function EventLeaderboardPage() {
                     </motion.div>
                 </div>
             </AnimatePresence>
-
             <Separator className="mt-10" />
-
             <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 mt-7">
                 {players.slice(3).map((player, index) => (
                     <motion.div

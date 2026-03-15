@@ -26,6 +26,8 @@ Route::get('events/{event}/leaderboard', [App\Http\Controllers\EventController::
 Route::prefix('events/{event}/players')->name('players.')->controller(App\Http\Controllers\PlayerController::class)
     ->group(function () {
         Route::post('/', 'store')->name('store');
+        Route::patch('/{player}', 'update')->name('update');
+        Route::delete('/{player}', 'destroy')->name('destroy');
         Route::post('/{player}/score', 'score')->name('score');
     })->middleware(['auth', 'verified']);
 

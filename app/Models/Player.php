@@ -11,8 +11,22 @@ class Player extends Model
     /** @use HasFactory<\Database\Factories\PlayerFactory> */
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'player_number'];
     protected $appends = ['score'];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Player $player) {
+            $max = static::where('event_id', $player->event_id)->max('player_number');
+            $player->player_number = ($max ?? 0) + 1;
+        });
+
+        static::deleted(function (Player $player) {
+            static::where('event_id', $player->event_id)
+                ->where('player_number', '>', $player->player_number)
+                ->decrement('player_number');
+        });
+    }
 
     public function event()
     {

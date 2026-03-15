@@ -69,7 +69,7 @@ class EventController extends Controller
 
     public function leaderboard(Event $event)
     {
-        $event = $event->load(['players', 'items']);
+        $event = $event->load(['players.items', 'items']);
 
         return inertia()->render('events/leaderboards', [
             'event' => $event

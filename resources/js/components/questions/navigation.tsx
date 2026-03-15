@@ -9,6 +9,7 @@ import { ShowEventProps } from '@/pages/events/show';
 import items from '@/routes/items';
 import events from '@/routes/events';
 import SelectQuestionDropdown from './select-dropdown';
+import ScoreFormNavigation from './score-form';
 
 export default function QuestionNavigation() {
     const { event, question } = usePage<ShowEventProps>().props;
@@ -22,23 +23,13 @@ export default function QuestionNavigation() {
             question: question
         })
     }
-
-    const updateScore = (operation: '+' | '-') => {
-        router.patch(items.update({
-            event: event.id as number,
-            item: question.id as number
-        }).url, {
-            operation: operation
-        });
-    }
-
     return (
         <ButtonGroup>
             <ButtonGroup>
                 <SelectQuestionDropdown>
                     <Button variant={'outline'} size={'sm'} asChild className='text-xs'>
                         <div>
-                            Question {question.index}
+                            Q{question.index}
                         </div>
                     </Button>
                 </SelectQuestionDropdown>
@@ -52,26 +43,7 @@ export default function QuestionNavigation() {
                     <PlusCircle />
                 </Button>
             </ButtonGroup>
-            <ButtonGroup>
-                <Button variant={'outline'} size={'sm'} onClick={() => updateScore('-')} disabled={question.score == 1}>
-                    <Minus />
-                </Button>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button asChild variant={'outline'} size={'sm'}>
-                            <div>
-                                {question.score}
-                            </div>
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        The score value of the current question
-                    </TooltipContent>
-                </Tooltip>
-                <Button variant={'outline'} size={'sm'} onClick={() => updateScore('+')}>
-                    <Plus />
-                </Button>
-            </ButtonGroup>
+            <ScoreFormNavigation />
         </ButtonGroup>
     )
 }

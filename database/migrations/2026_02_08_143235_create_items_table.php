@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained();
+            $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->integer('index');
             $table->integer('score');
             $table->unique(['event_id', 'index']);

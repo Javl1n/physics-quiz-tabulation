@@ -23,7 +23,7 @@ export default function EditPlayerDialog({ children }: { children: ReactNode }) 
     });
 
     const save = () => {
-        patch(players.store(event.id as number).url, {
+        patch(players.update({ event: event.id as number, player: player?.id as number }).url, {
             onSuccess: () => {
                 reset();
                 setIsOpen(false);

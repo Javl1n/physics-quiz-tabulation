@@ -13,7 +13,7 @@ export default function FirstPlaceCard({ player }: { player: PlayerType }) {
             <div className="uppercase text-xs tracking-wider text-foreground">
                 1st place
             </div>
-            <div className="font-bold mt-2 text-xl text-foreground">
+            <div className="font-bold mt-2 text-xl text-foreground z-10 relative">
                 {player.name}
             </div>
             <div className="text-primary-foreground">

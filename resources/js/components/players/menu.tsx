@@ -4,6 +4,7 @@ import { PenSquare, Trash } from "lucide-react";
 import { PlayerType } from "@/types";
 import { PlayerContext } from "./player-item";
 import EditPlayerDialog from "./edit";
+import DeletePlayerDialog from "./delete";
 
 export default function PlayerMenu({ children }: { children: ReactNode }) {
     const preventClose = (e: Event) => e.preventDefault();
@@ -19,10 +20,12 @@ export default function PlayerMenu({ children }: { children: ReactNode }) {
                         Rename Player
                     </ContextMenuItem>
                 </EditPlayerDialog>
-                <ContextMenuItem variant="destructive">
-                    <Trash />
-                    Delete Player
-                </ContextMenuItem>
+                <DeletePlayerDialog>
+                    <ContextMenuItem onSelect={preventClose} variant="destructive">
+                        <Trash />
+                        Delete Player
+                    </ContextMenuItem>
+                </DeletePlayerDialog>
             </ContextMenuContent>
         </ContextMenu>
     )
