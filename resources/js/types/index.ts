@@ -25,6 +25,7 @@ export type EventType = {
 export type PlayerType = {
     id: number | string;
     event: EventType;
+    player_number: number;
     items: ItemType[];
     name: string;
     score: number;

@@ -33,6 +33,16 @@ export default function PlayerItem({ player }: { player: PlayerType }) {
                     isCorrect && 'border-green-700 bg-green-900/10 text-green-500'
                 ])}>
                     <ItemContent>
+                        <ItemTitle
+                            className={cn([
+                                "font-black text-lg text-secondary-foreground/20",
+                                isCorrect && "text-green-500/50"
+                            ])}
+                        >
+                            {player.player_number}
+                        </ItemTitle>
+                    </ItemContent>
+                    <ItemContent className="flex-1">
                         <ItemTitle className="line-clamp-1">
                             {player.name}
                         </ItemTitle>

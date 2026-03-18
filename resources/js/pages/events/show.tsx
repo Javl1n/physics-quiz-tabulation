@@ -33,7 +33,9 @@ export default function ShowEvents({ event }: ShowEventProps) {
     ];
 
     const [query, setQuery] = useState("");
-    const players = event.players.filter((user) => user.name.toLowerCase().includes(query.toLowerCase()))
+    const players = event.players.filter((user) =>
+        user.name.toLowerCase().includes(query.toLowerCase()) || user.player_number.toString().includes(query)
+    )
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
