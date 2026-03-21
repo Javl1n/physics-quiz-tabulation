@@ -10,6 +10,7 @@ import { EventType, ItemType, PlayerType, SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
 import { useEchoPublic } from "@laravel/echo-react";
 import { useState } from "react";
+import TimerPage from "@/components/timer/page";
 
 export type LeaderboardProps = SharedData & {
     event: EventType;
@@ -22,7 +23,6 @@ export default function EventLeaderboardPage() {
     const [items, setItems] = useState<ItemType[]>(event.items);
 
     useEchoPublic(`leaderboards.${event.id}`, '.player.deleted', ({ player }: { player: PlayerType }) => {
-        console.log('deleted')
         setPlayers(prev => [
             ...prev.filter((p) => p.id !== player.id)
         ])
@@ -48,6 +48,7 @@ export default function EventLeaderboardPage() {
     return (
         <div className="px-10 py-6 min-h-screen">
             <div className="flex gap-6">
+                <TimerPage />
                 <AppLogoImage className="size-16 scale-150" />
                 <div className="flex-1">
                     <div className="text-xs font-mono tracking-widest">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TimerStarted;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -65,6 +66,13 @@ class EventController extends Controller
             'question' => $item,
             'questions' => $items,
         ]);
+    }
+
+    public function timer(Event $event, int $time)
+    {
+        broadcast(new TimerStarted($event, $time));
+
+        return back();
     }
 
     public function leaderboard(Event $event)

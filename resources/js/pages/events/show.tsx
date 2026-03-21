@@ -8,10 +8,11 @@ import DropDownNavigation from '@/components/events/menu';
 import QuestionNavigation from '@/components/questions/navigation';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Button } from '@/components/ui/button';
-import { Trophy, UserCircle } from 'lucide-react';
+import { Timer, Trophy, UserCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty';
+import TimerControllerDrawer from '@/components/timer/controller';
 
 export type ShowEventProps = SharedData & {
     event: EventType;
@@ -58,6 +59,11 @@ export default function ShowEvents({ event }: ShowEventProps) {
                                         <Trophy />
                                     </a>
                                 </Button>
+                                <TimerControllerDrawer>
+                                    <Button variant={'outline'} size={'sm'}>
+                                        <Timer />
+                                    </Button>
+                                </TimerControllerDrawer>
                             </ButtonGroup>
                             <DropDownNavigation />
                         </ButtonGroup>

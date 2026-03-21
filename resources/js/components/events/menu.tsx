@@ -1,6 +1,6 @@
 import { router, usePage } from '@inertiajs/react';
 import type { EventType } from '@/types';
-import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, Trophy, UserPlus } from 'lucide-react';
+import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, Timer, Trophy, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreateEventDialog from '@/components/events/create';
 import events from '@/routes/events';
@@ -10,6 +10,7 @@ import RenameEventDialog from './rename';
 import CreatePlayersDialog from '../players/create';
 import { ButtonGroup } from '../ui/button-group';
 import { ShowEventProps } from '@/pages/events/show';
+import TimerControllerDrawer from '../timer/controller';
 
 
 export default function DropDownNavigation() {
@@ -71,6 +72,12 @@ export default function DropDownNavigation() {
                                 Leaderboards
                             </a>
                         </DropdownMenuItem>
+                        <TimerControllerDrawer>
+                            <DropdownMenuItem className={'sm:hidden'} onSelect={preventClose}>
+                                <Timer />
+                                Timer
+                            </DropdownMenuItem>
+                        </TimerControllerDrawer>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>

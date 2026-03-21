@@ -1,9 +1,6 @@
 import { Button } from '@/components/ui/button';
-import DropDownNavigation from '@/components/events/menu';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { ChevronLeft, ChevronRight, Minus, Plus, PlusCircle } from 'lucide-react';
-import { Input } from '../ui/input';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { ShowEventProps } from '@/pages/events/show';
 import items from '@/routes/items';
