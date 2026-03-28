@@ -11,6 +11,9 @@ import { usePage } from "@inertiajs/react";
 import { useEchoPublic } from "@laravel/echo-react";
 import { useState } from "react";
 import TimerPage from "@/components/timer/page";
+import { Button } from "@/components/ui/button";
+import { Eye, Timer } from "lucide-react";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 export type LeaderboardProps = SharedData & {
     event: EventType;
@@ -21,6 +24,8 @@ export default function EventLeaderboardPage() {
 
     const [players, setPlayers] = useState<PlayerType[]>(event.players.sort((a, b) => b.score - a.score));
     const [items, setItems] = useState<ItemType[]>(event.items);
+    const [timerToggled, setTimerToggled] = useState(false);
+    const [showTimer, setShowTimer] = useState(true);
 
     useEchoPublic(`leaderboards.${event.id}`, '.player.deleted', ({ player }: { player: PlayerType }) => {
         setPlayers(prev => [
@@ -48,7 +53,7 @@ export default function EventLeaderboardPage() {
     return (
         <div className="px-10 py-6 min-h-screen">
             <div className="flex gap-6">
-                <TimerPage />
+                {showTimer && <TimerPage toggled={timerToggled} setToggle={(bool) => setTimerToggled(bool)} />}
                 <AppLogoImage className="size-16 scale-150" />
                 <div className="flex-1">
                     <div className="text-xs font-mono tracking-widest">
@@ -61,6 +66,17 @@ export default function EventLeaderboardPage() {
                             </div>
                         </div>
                         <div className="flex gap-5 me-4">
+                            <div className="my-auto">
+                                <ButtonGroup>
+                                    <Button onClick={() => setTimerToggled(prev => !prev)} variant={timerToggled ? 'default' : 'secondary'}>
+                                        <Timer />
+                                    </Button>
+                                    <Button onClick={() => setShowTimer(prev => !prev)} variant={showTimer ? 'default' : 'secondary'}>
+                                        <Eye />
+                                    </Button>
+                                </ButtonGroup>
+                            </div>
+                            <Separator orientation="vertical" />
                             <div className="">
                                 <div className="font-bold text-xl text-end">
                                     {items.length}

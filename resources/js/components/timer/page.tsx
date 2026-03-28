@@ -10,8 +10,9 @@ import { ChartContainer } from "../ui/chart";
 import { AnimatePresence, motion } from "motion/react";
 import useBeep from "@/hooks/use-beep";
 import useSound from 'use-sound';
+import { cn } from "@/lib/utils";
 
-export default function TimerPage() {
+export default function TimerPage({ toggled, setToggle }: { toggled: boolean, setToggle: (bool: boolean) => void }) {
     const { event } = usePage<LeaderboardProps>().props;
     const { beep, success, buzzer, whistle } = useBeep();
     const [play] = useSound('/storage/timeout-extended.mp3', { volume: 1 });
@@ -21,7 +22,7 @@ export default function TimerPage() {
     const [show, setShow] = useState(false);
 
     const { seconds, totalSeconds, totalMilliseconds, isRunning, restart } = useTimer({
-        expiryTimestamp: new Date(Date.now() + 5 * 1000),
+        expiryTimestamp: new Date(Date.now()),
         interval: 20,
         autoStart: false,
         onExpire: () => {
@@ -43,7 +44,7 @@ export default function TimerPage() {
         <div className="fixed inset top-0 right-0 z-100 transition">
             <AnimatePresence>
 
-                {show && (
+                {(show || toggled) && (
                     <motion.div
                         transition={{
                             duration: 0.3,
@@ -52,7 +53,10 @@ export default function TimerPage() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
-                        <div className="bg-background/95 h-screen w-screen">
+                        <div onClick={() => setToggle(false)} className={cn([
+                            toggled ? "bg-background" : "bg-background/95",
+                            "h-screen w-screen"
+                        ])}>
                             <ChartContainer
                                 config={{ timer: { color: "var(--primary)" } }}
                                 className="mx-auto my-auto h-full w-full aspect-square scale-250"
