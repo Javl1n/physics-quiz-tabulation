@@ -16,6 +16,7 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
+        "maatwebsite/excel": "^3.1",
         "nativephp/desktop": "^2.1"
     },
     "require-dev": {

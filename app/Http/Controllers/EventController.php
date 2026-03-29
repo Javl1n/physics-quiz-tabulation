@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\TimerStarted;
+use App\Exports\EventResultExport;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EventController extends Controller
 {
@@ -66,6 +68,11 @@ class EventController extends Controller
             'question' => $item,
             'questions' => $items,
         ]);
+    }
+
+    public function export(Event $event)
+    {
+        return Excel::download(new EventResultExport($event->id), $event->name . ".csv");
     }
 
     public function timer(Event $event, int $time)

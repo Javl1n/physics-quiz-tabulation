@@ -17,6 +17,7 @@ Route::prefix('events')->name('events.')->controller(App\Http\Controllers\EventC
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
         Route::get('/{event}', 'show')->name('show');
+        Route::get('/{event}/export', 'export')->name('export');
         Route::get('/{event}/timer/{time}', 'timer')->name('timer');
         Route::patch('/{event}', 'update')->name('update');
         Route::delete('/{event}', 'destroy')->name('destroy');

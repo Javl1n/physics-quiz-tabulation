@@ -1,6 +1,6 @@
-import { router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import type { EventType } from '@/types';
-import { LucideTrash, MoreHorizontalIcon, Plus, SquarePen, TableProperties, Timer, Trophy, UserPlus } from 'lucide-react';
+import { FileSpreadsheet, LucideTrash, MoreHorizontalIcon, Plus, Sheet, SquarePen, TableProperties, Timer, Trophy, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreateEventDialog from '@/components/events/create';
 import events from '@/routes/events';
@@ -66,6 +66,9 @@ export default function DropDownNavigation() {
                                 Add Players
                             </DropdownMenuItem>
                         </CreatePlayersDialog>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
                         <DropdownMenuItem asChild className='sm:hidden'>
                             <a href={events.leaderboard(event.id as number).url} target='_blank'>
                                 <Trophy />
@@ -78,6 +81,12 @@ export default function DropDownNavigation() {
                                 Timer
                             </DropdownMenuItem>
                         </TimerControllerDrawer>
+                        <a href={events.export(event.id as number).url} download>
+                            <DropdownMenuItem onSelect={preventClose}>
+                                <FileSpreadsheet />
+                                Export
+                            </DropdownMenuItem>
+                        </a>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
