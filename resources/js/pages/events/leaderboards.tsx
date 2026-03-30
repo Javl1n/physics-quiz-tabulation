@@ -68,11 +68,11 @@ export default function EventLeaderboardPage() {
                         <div className="flex gap-5 me-4">
                             <div className="my-auto">
                                 <ButtonGroup>
-                                    <Button onClick={() => setTimerToggled(prev => !prev)} variant={timerToggled ? 'default' : 'secondary'}>
-                                        <Timer />
+                                    <Button disabled={!showTimer} onClick={() => setTimerToggled(prev => !prev)} variant={'secondary'}>
+                                        <Eye />
                                     </Button>
                                     <Button onClick={() => setShowTimer(prev => !prev)} variant={showTimer ? 'default' : 'secondary'}>
-                                        <Eye />
+                                        <Timer />
                                     </Button>
                                 </ButtonGroup>
                             </div>

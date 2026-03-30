@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export default function TimerPage({ toggled, setToggle }: { toggled: boolean, setToggle: (bool: boolean) => void }) {
     const { event } = usePage<LeaderboardProps>().props;
     const { beep, success, buzzer, whistle } = useBeep();
-    const [play] = useSound('/storage/timeout-extended.mp3', { volume: 1 });
+    const [play] = useSound('/sounds/timeout-extended.mp3', { volume: 1 });
 
 
     const [time, setTime] = useState(15);
