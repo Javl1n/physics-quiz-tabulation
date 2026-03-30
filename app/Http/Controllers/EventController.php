@@ -72,7 +72,7 @@ class EventController extends Controller
 
     public function export(Event $event)
     {
-        return Excel::download(new EventResultExport($event->id), $event->name . ".csv");
+        return Excel::download(new EventResultExport($event->id), $event->name . ".xlsx");
     }
 
     public function timer(Event $event, int $time)
